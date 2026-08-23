@@ -319,7 +319,7 @@
     <div class="card">
       <label for="rsvp-name">Name(s)</label>
       <div class="name-row">
-        <input type="text" id="rsvp-name" autocomplete="name" />
+        <input type="text" id="rsvp-name" placeholder="Guest name" autocomplete="name" />
         <button type="button" class="add-name-btn" id="add-guest-btn" aria-label="Add another person" title="Add another person">+</button>
       </div>
       <div id="extra-guests"></div>
@@ -366,16 +366,25 @@
   const addGuestBtn = document.getElementById('add-guest-btn');
   let extraGuestId = 0;
 
+  function renumberGuests() {
+    extraGuestsEl.querySelectorAll('.extra-guest-row input')
+      .forEach((input, i) => { input.placeholder = 'Guest name ' + (i + 2); });
+  }
+
   function addGuestRow() {
     const id = 'extra-guest-' + (extraGuestId++);
     const row = document.createElement('div');
     row.className = 'extra-guest-row';
     row.innerHTML = `
-      <input type="text" id="${id}" placeholder="Guest name" />
+      <input type="text" id="${id}" />
       <button type="button" class="remove-guest-btn" aria-label="Remove this guest">×</button>
     `;
-    row.querySelector('.remove-guest-btn').addEventListener('click', () => row.remove());
+    row.querySelector('.remove-guest-btn').addEventListener('click', () => {
+      row.remove();
+      renumberGuests();
+    });
     extraGuestsEl.appendChild(row);
+    renumberGuests();
     row.querySelector('input').focus();
   }
   addGuestBtn.addEventListener('click', addGuestRow);
