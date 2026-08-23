@@ -50,20 +50,6 @@
     user-select: none;
   }
 
-  .petal {
-    position: absolute;
-    top: -20px;
-    border-radius: 50%;
-    opacity: 0.5;
-    animation: fall linear infinite;
-  }
-  @keyframes fall {
-    to { transform: translateY(110vh) rotate(180deg); opacity: 0.1; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .petal { animation: none; display: none; }
-  }
-
   .wrap {
     max-width: 560px;
     margin: 0 auto;
@@ -187,8 +173,29 @@
     color: var(--cream);
   }
 
-  .guest-count-wrap { display: none; }
-  .guest-count-wrap.show { display: block; }
+  .name-row {
+    display: flex;
+    gap: 8px;
+  }
+  .name-row input { flex: 1; }
+
+  .add-name-btn {
+    flex-shrink: 0;
+    width: 46px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: #FFFFFF;
+    color: var(--fern);
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .add-name-btn:hover { border-color: var(--fern); background: var(--pistachio-soft); }
+  .add-name-btn:focus-visible { outline: 2px solid var(--fern); outline-offset: 2px; }
+
+  #extra-guests:not(:empty) { margin-top: 8px; }
 
   .extra-guest-row {
     display: flex;
@@ -207,21 +214,6 @@
     cursor: pointer;
   }
   .remove-guest-btn:hover { color: var(--fern); border-color: var(--fern); }
-
-  .add-guest-btn {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1.5px dashed var(--line);
-    background: transparent;
-    color: var(--ink-dim);
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-top: 2px;
-  }
-  .add-guest-btn:hover { border-color: var(--fern-deep); color: var(--fern-deep); }
 
   .submit-btn {
     width: 100%;
@@ -326,18 +318,16 @@
 
     <div class="card">
       <label for="rsvp-name">Name(s)</label>
-      <input type="text" id="rsvp-name" placeholder="e.g. Alex Nguyen" autocomplete="name" />
+      <div class="name-row">
+        <input type="text" id="rsvp-name" placeholder="e.g. Alex Nguyen" autocomplete="name" />
+        <button type="button" class="add-name-btn" id="add-guest-btn" aria-label="Add another person" title="Add another person">+</button>
+      </div>
+      <div id="extra-guests"></div>
 
       <label>Will you be there?</label>
       <div class="toggle-row" role="group" aria-label="Attending">
         <button type="button" class="toggle-btn yes" id="btn-yes">Yes, can't wait</button>
         <button type="button" class="toggle-btn no" id="btn-no">Can't make it</button>
-      </div>
-
-      <div class="guest-count-wrap" id="guest-count-wrap">
-        <label>Who else is coming with you? <span style="font-weight:400;">(optional)</span></label>
-        <div id="extra-guests"></div>
-        <button type="button" class="add-guest-btn" id="add-guest-btn">+ Add another person</button>
       </div>
 
       <label for="rsvp-note">Message for the host (optional)</label>
@@ -368,26 +358,10 @@
 
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const body = document.body;
-  const colors = ['#768E78', '#C6C09C', '#4E6653'];
-  for (let i = 0; i < 20; i++) {
-    const p = document.createElement('div');
-    p.className = 'petal';
-    const size = 6 + Math.random() * 6;
-    p.style.width = size + 'px';
-    p.style.height = size + 'px';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.background = colors[i % colors.length];
-    p.style.animationDuration = (9 + Math.random() * 8) + 's';
-    p.style.animationDelay = (Math.random() * 10) + 's';
-    body.appendChild(p);
-  }
-
   let attending = null;
 
   const btnYes = document.getElementById('btn-yes');
   const btnNo = document.getElementById('btn-no');
-  const countWrap = document.getElementById('guest-count-wrap');
   const extraGuestsEl = document.getElementById('extra-guests');
   const addGuestBtn = document.getElementById('add-guest-btn');
   let extraGuestId = 0;
@@ -402,6 +376,7 @@
     `;
     row.querySelector('.remove-guest-btn').addEventListener('click', () => row.remove());
     extraGuestsEl.appendChild(row);
+    row.querySelector('input').focus();
   }
   addGuestBtn.addEventListener('click', addGuestRow);
 
@@ -409,13 +384,11 @@
     attending = true;
     btnYes.classList.add('active');
     btnNo.classList.remove('active');
-    countWrap.classList.add('show');
   });
   btnNo.addEventListener('click', () => {
     attending = false;
     btnNo.classList.add('active');
     btnYes.classList.remove('active');
-    countWrap.classList.remove('show');
   });
 
   const submitBtn = document.getElementById('submit-btn');
@@ -510,7 +483,6 @@
       attending = null;
       btnYes.classList.remove('active');
       btnNo.classList.remove('active');
-      countWrap.classList.remove('show');
       await refresh();
     }
 
