@@ -5,24 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Joanna's 30th Birthday — RSVP</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Sacramento&family=DM+Sans:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Sacramento&display=swap');
 
   :root {
-    --cream: #F6F1E7;
-    --card: #FFFBF0;
-    --rose: #E79897;
-    --blush: #FECDBE;
-    --blush-soft: #FBF0F0;
-    --ink: #3B3830;
-    --ink-dim: #8A8175;
-    --gold: #C9A66B;
+    --cream: #F4F2E6;
+    --card: #FBFAF0;
+    --fern: #768E78;
+    --fern-deep: #4E6653;
+    --fern-muted: #667A69;
+    --pistachio: #C6C09C;
+    --pistachio-soft: #E9EADD;
+    --ink: #2F3A31;
+    --ink-dim: #667A69;
+    --line: #D8D6BE;
+    --sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--sans);
     background: var(--cream);
     color: var(--ink);
     min-height: 100vh;
@@ -36,11 +39,11 @@
     top: -40px;
     left: 50%;
     transform: translateX(-50%);
-    font-family: 'Playfair Display', serif;
+    font-family: var(--sans);
     font-size: 340px;
     font-weight: 700;
-    color: var(--blush);
-    opacity: 0.45;
+    color: var(--pistachio);
+    opacity: 0.55;
     z-index: 0;
     pointer-events: none;
     line-height: 1;
@@ -73,27 +76,27 @@
     font-size: 13px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--fern-deep);
     font-weight: 600;
     margin-bottom: 10px;
   }
 
   h1 {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 600;
+    font-family: var(--sans);
+    font-weight: 700;
     font-size: clamp(32px, 6.5vw, 46px);
     text-align: center;
     margin: 0 0 6px;
     line-height: 1.1;
+    letter-spacing: -0.01em;
     color: var(--ink);
   }
   .script {
     display: block;
     font-family: 'Sacramento', cursive;
-    font-style: normal;
-    font-size: 1.5em;
-    color: var(--rose);
+    font-weight: 400;
+    font-size: 1.6em;
+    color: var(--fern);
     line-height: 1;
     margin-bottom: 2px;
   }
@@ -115,7 +118,7 @@
   .divider {
     width: 64px;
     height: 2px;
-    background: var(--rose);
+    background: var(--fern);
     margin: 0 auto 32px;
     border-radius: 2px;
     opacity: 0.6;
@@ -125,8 +128,8 @@
     background: var(--card);
     border-radius: 18px;
     padding: 28px 26px 30px;
-    box-shadow: 0 20px 46px rgba(59, 56, 48, 0.10);
-    border: 1.5px solid var(--rose);
+    box-shadow: 0 20px 46px rgba(47, 58, 49, 0.12);
+    border: 1.5px solid var(--fern);
   }
 
   label {
@@ -142,16 +145,16 @@
     width: 100%;
     padding: 12px 14px;
     border-radius: 10px;
-    border: 1.5px solid #E9DFCE;
+    border: 1.5px solid var(--line);
     background: #FFFFFF;
     color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--sans);
     font-size: 15px;
     outline: none;
     transition: border-color 0.15s ease;
   }
   input[type="text"]:focus, textarea:focus {
-    border-color: var(--rose);
+    border-color: var(--fern);
   }
   textarea { resize: vertical; min-height: 64px; }
 
@@ -163,19 +166,19 @@
     flex: 1;
     padding: 12px 10px;
     border-radius: 10px;
-    border: 1.5px solid #E9DFCE;
+    border: 1.5px solid var(--line);
     background: transparent;
     color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--sans);
     font-weight: 600;
     font-size: 15px;
     cursor: pointer;
     transition: all 0.15s ease;
   }
-  .toggle-btn:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+  .toggle-btn:focus-visible { outline: 2px solid var(--fern); outline-offset: 2px; }
   .toggle-btn.yes.active {
-    background: var(--rose);
-    border-color: var(--rose);
+    background: var(--fern);
+    border-color: var(--fern);
     color: #FFFFFF;
   }
   .toggle-btn.no.active {
@@ -197,28 +200,28 @@
     flex-shrink: 0;
     width: 38px;
     border-radius: 10px;
-    border: 1.5px solid #E9DFCE;
+    border: 1.5px solid var(--line);
     background: #FFFFFF;
     color: var(--ink-dim);
     font-size: 16px;
     cursor: pointer;
   }
-  .remove-guest-btn:hover { color: var(--rose); border-color: var(--rose); }
+  .remove-guest-btn:hover { color: var(--fern); border-color: var(--fern); }
 
   .add-guest-btn {
     width: 100%;
     padding: 10px;
     border-radius: 10px;
-    border: 1.5px dashed #D9CBAE;
+    border: 1.5px dashed var(--line);
     background: transparent;
     color: var(--ink-dim);
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--sans);
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     margin-top: 2px;
   }
-  .add-guest-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .add-guest-btn:hover { border-color: var(--fern-deep); color: var(--fern-deep); }
 
   .submit-btn {
     width: 100%;
@@ -226,33 +229,33 @@
     padding: 14px;
     border-radius: 10px;
     border: none;
-    background: var(--rose);
+    background: var(--fern);
     color: #FFFFFF;
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
+    font-family: var(--sans);
     font-weight: 600;
-    font-size: 17px;
+    font-size: 16px;
+    letter-spacing: 0.01em;
     cursor: pointer;
     transition: transform 0.1s ease, background 0.15s ease;
   }
-  .submit-btn:hover { background: #DD8584; }
+  .submit-btn:hover { background: var(--fern-deep); }
   .submit-btn:active { transform: scale(0.98); }
   .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-  .submit-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .submit-btn:focus-visible { outline: 2px solid var(--fern-deep); outline-offset: 2px; }
 
   .status-msg {
     text-align: center;
     font-size: 14px;
     margin-top: 12px;
     min-height: 18px;
-    color: var(--gold);
+    color: var(--fern-deep);
   }
 
   .tally { margin-top: 40px; text-align: center; }
   .tally-label {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 17px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 16px;
     color: var(--ink);
     margin-bottom: 14px;
   }
@@ -264,15 +267,15 @@
     min-height: 14px;
     align-items: center;
   }
-  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--rose); }
-  .dot:nth-child(3n) { background: var(--gold); }
-  .dot:nth-child(4n) { background: var(--blush); border: 1px solid var(--rose); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--fern); }
+  .dot:nth-child(3n) { background: var(--fern-deep); }
+  .dot:nth-child(4n) { background: var(--pistachio); border: 1px solid var(--fern); }
 
   .guest-list { margin-top: 36px; }
   .guest-list h2 {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 19px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 18px;
     color: var(--ink);
     text-align: center;
     margin-bottom: 14px;
@@ -284,7 +287,7 @@
     flex-wrap: wrap;
     padding: 10px 14px;
     border-radius: 10px;
-    background: var(--blush-soft);
+    background: var(--pistachio-soft);
     margin-bottom: 6px;
     font-size: 14px;
   }
@@ -295,8 +298,8 @@
     padding: 3px 10px;
     border-radius: 999px;
   }
-  .guest-status.yes { background: rgba(231,152,151,0.22); color: #B5514F; }
-  .guest-status.no { background: rgba(59,56,48,0.10); color: var(--ink-dim); }
+  .guest-status.yes { background: rgba(118,142,120,0.22); color: var(--fern-deep); }
+  .guest-status.no { background: rgba(47,58,49,0.10); color: var(--ink-dim); }
   .guest-note {
     font-size: 12px;
     color: var(--ink-dim);
@@ -366,7 +369,7 @@
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const body = document.body;
-  const colors = ['#E79897', '#FECDBE', '#C9A66B'];
+  const colors = ['#768E78', '#C6C09C', '#4E6653'];
   for (let i = 0; i < 20; i++) {
     const p = document.createElement('div');
     p.className = 'petal';
