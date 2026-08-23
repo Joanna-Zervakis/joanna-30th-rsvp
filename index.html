@@ -243,6 +243,33 @@
     color: var(--fern-deep);
   }
 
+  .cal-links { text-align: center; margin-top: 6px; }
+  .cal-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fern-deep);
+    margin-bottom: 10px;
+  }
+  .cal-btns { display: flex; gap: 8px; justify-content: center; }
+  .cal-btn {
+    flex: 1;
+    max-width: 170px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    border: 1.5px solid var(--fern);
+    background: var(--pistachio-soft);
+    color: var(--fern-deep);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .cal-btn:hover { background: var(--fern); color: #FFFFFF; }
+  .cal-btn:focus-visible { outline: 2px solid var(--fern-deep); outline-offset: 2px; }
+
   .tally { margin-top: 40px; text-align: center; }
   .tally-label {
     font-family: var(--sans);
@@ -335,6 +362,14 @@
 
       <button class="submit-btn" id="submit-btn">Send RSVP</button>
       <div class="status-msg" id="status-msg"></div>
+
+      <div class="cal-links" id="cal-links" hidden>
+        <span class="cal-label">Add it to your calendar</span>
+        <div class="cal-btns">
+          <a class="cal-btn" id="cal-google" target="_blank" rel="noopener">Google Calendar</a>
+          <a class="cal-btn" id="cal-ics" download="joannas-30th-birthday.ics">Apple / Outlook</a>
+        </div>
+      </div>
     </div>
 
     <div class="tally">
@@ -402,6 +437,30 @@
 
   const submitBtn = document.getElementById('submit-btn');
   const statusMsg = document.getElementById('status-msg');
+
+  // ---- Add to calendar (Sat 3 Oct 2026, 7:00–11:00pm AEST = 09:00–13:00 UTC) ----
+  const EVENT = {
+    title: "Joanna's 30th Birthday",
+    location: "38 Landscape Drive, Hillside, VIC 3037",
+    details: "Join us to celebrate Joanna's 30th!",
+    startUTC: "20261003T090000Z",
+    endUTC: "20261003T130000Z"
+  };
+  const calLinks = document.getElementById('cal-links');
+  const gcalUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE"
+    + "&text=" + encodeURIComponent(EVENT.title)
+    + "&dates=" + EVENT.startUTC + "/" + EVENT.endUTC
+    + "&location=" + encodeURIComponent(EVENT.location)
+    + "&details=" + encodeURIComponent(EVENT.details);
+  const ics = [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Joannas 30th//RSVP//EN", "CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT", "UID:joannas-30th-20261003@rsvp", "DTSTAMP:20260101T000000Z",
+    "DTSTART:" + EVENT.startUTC, "DTEND:" + EVENT.endUTC,
+    "SUMMARY:" + EVENT.title, "LOCATION:" + EVENT.location, "DESCRIPTION:" + EVENT.details,
+    "END:VEVENT", "END:VCALENDAR"
+  ].join("\r\n");
+  document.getElementById('cal-google').href = gcalUrl;
+  document.getElementById('cal-ics').href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
 
   async function loadList() {
     const { data, error } = await supabase
@@ -486,6 +545,7 @@
       statusMsg.textContent = "Something went wrong — please try again.";
     } else {
       statusMsg.textContent = "Thanks — your RSVP is in!";
+      calLinks.hidden = !attending;
       document.getElementById('rsvp-name').value = '';
       document.getElementById('rsvp-note').value = '';
       extraGuestsEl.innerHTML = '';
