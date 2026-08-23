@@ -438,13 +438,13 @@
   const submitBtn = document.getElementById('submit-btn');
   const statusMsg = document.getElementById('status-msg');
 
-  // ---- Add to calendar (Sat 3 Oct 2026, 7:00–11:00pm AEST = 09:00–13:00 UTC) ----
+  // ---- Add to calendar (Sat 3 Oct 2026, 7:00pm–midnight AEST = 09:00–14:00 UTC) ----
   const EVENT = {
     title: "Joanna's 30th Birthday",
     location: "38 Landscape Drive, Hillside, VIC 3037",
-    details: "Join us to celebrate Joanna's 30th!",
+    details: "Join us to celebrate Joanna's 30th! Dress code: casual.",
     startUTC: "20261003T090000Z",
-    endUTC: "20261003T130000Z"
+    endUTC: "20261003T140000Z"
   };
   const calLinks = document.getElementById('cal-links');
   const gcalUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE"
