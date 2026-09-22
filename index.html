@@ -371,16 +371,6 @@
         </div>
       </div>
     </div>
-
-    <div class="tally">
-      <div class="tally-label" id="tally-label">Waiting on the first RSVP…</div>
-      <div class="dots" id="dots"></div>
-    </div>
-
-    <div class="guest-list">
-      <h2>Who's coming</h2>
-      <div id="guest-list-body"></div>
-    </div>
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -462,61 +452,6 @@
   document.getElementById('cal-google').href = gcalUrl;
   document.getElementById('cal-ics').href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
 
-  async function loadList() {
-    const { data, error } = await supabase
-      .from('rsvps')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) {
-      console.error(error);
-      return [];
-    }
-    return data || [];
-  }
-
-  function renderList(list) {
-    const listBody = document.getElementById('guest-list-body');
-    const tallyLabel = document.getElementById('tally-label');
-    const dotsEl = document.getElementById('dots');
-
-    if (!list.length) {
-      listBody.innerHTML = '<div class="empty-state">No responses yet — be the first!</div>';
-      tallyLabel.textContent = "Waiting on the first RSVP…";
-      dotsEl.innerHTML = '';
-      return;
-    }
-
-    listBody.innerHTML = list.map(r => {
-      const names = r.guests && r.guests.length ? [r.name, ...r.guests] : [r.name];
-      return `
-      <div class="guest-row">
-        <span class="guest-name">${escapeHtml(names.join(', '))}</span>
-        <span class="guest-status ${r.attending ? 'yes' : 'no'}">${r.attending ? (names.length > 1 ? `Coming (${names.length})` : 'Coming') : "Can't make it"}</span>
-        ${r.note ? `<div class="guest-note">"${escapeHtml(r.note)}"</div>` : ''}
-      </div>
-    `;
-    }).join('');
-
-    const totalComing = list.filter(r => r.attending)
-      .reduce((sum, r) => sum + 1 + (r.guests ? r.guests.length : 0), 0);
-    const totalDeclined = list.filter(r => !r.attending).length;
-    tallyLabel.textContent = `${totalComing} coming${totalDeclined ? ` · ${totalDeclined} can't make it` : ''}`;
-
-    dotsEl.innerHTML = Array.from({ length: Math.min(totalComing, 40) })
-      .map(() => '<div class="dot"></div>').join('');
-  }
-
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  async function refresh() {
-    const list = await loadList();
-    renderList(list);
-  }
-
   submitBtn.addEventListener('click', async () => {
     const name = document.getElementById('rsvp-name').value.trim();
     const note = document.getElementById('rsvp-note').value.trim();
@@ -552,14 +487,11 @@
       attending = null;
       btnYes.classList.remove('active');
       btnNo.classList.remove('active');
-      await refresh();
     }
 
     submitBtn.disabled = false;
     submitBtn.textContent = "Send RSVP";
   });
-
-  refresh();
 })();
 </script>
 </body>
